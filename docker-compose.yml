@@ -1,0 +1,78 @@
+version: '3.8'
+
+# ============================================================
+#  LuxGem Jewelry Store — Docker Compose
+#  Levanta: PostgreSQL + Backend (Node.js) + Frontend (Next.js)
+#
+#  Uso:
+#    docker-compose up --build          ← primera vez
+#    docker-compose up -d               ← en background
+#    docker-compose down -v             ← destruir + volúmenes
+# ============================================================
+
+services:
+
+  # ── PostgreSQL ─────────────────────────────────────────────
+  postgres:
+    image: postgres:15-alpine
+    container_name: luxgem-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: luxgem_db
+      POSTGRES_USER: luxgem_user
+      POSTGRES_PASSWORD: luxgem_pass
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U luxgem_user -d luxgem_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - luxgem-network
+
+  # ── Backend (Node.js / Express) ────────────────────────────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: luxgem-backend
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      PORT: 4000
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: luxgem_db
+      DB_USER: luxgem_user
+      DB_PASSWORD: luxgem_pass
+      JWT_SECRET: ${JWT_SECRET:-luxgem_jwt_secret_change_in_production}
+      JWT_EXPIRES_IN: 24h
+      FRONTEND_URL: http://localhost:3000
+      MAX_FILE_SIZE: 5242880
+    volumes:
+      - uploads_data:/app/uploads
+    ports:
+      - "4000:4000"
+    networks:
+      - luxgem-network
+
+
+# ── Volumes ────────────────────────────────────────────────────
+volumes:
+  postgres_data:
+    name: luxgem_postgres_data
+  uploads_data:
+    name: luxgem_uploads_data
+
+# ── Networks ───────────────────────────────────────────────────
+networks:
+  luxgem-network:
+    name: luxgem-network
+    driver: bridge
