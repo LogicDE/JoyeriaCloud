@@ -120,7 +120,7 @@ export default function CartDrawer({ isOpen, onClose }: Props) {
             </div>
 
             <Link
-              href="/carrito"
+              href="/cart"
               onClick={onClose}
               className="block text-center bg-yellow-500 hover:bg-yellow-400 text-black font-bold py-3 rounded-lg transition"
             >

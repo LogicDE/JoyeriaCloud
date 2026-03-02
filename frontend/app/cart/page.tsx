@@ -132,9 +132,12 @@ export default function CartPage() {
             <span>${getSubtotal()}</span>
           </div>
 
-          <button className="w-full mt-8 bg-yellow-500 hover:bg-yellow-400 text-black font-bold py-3 rounded-lg transition">
+          <Link
+              href="/checkout"
+              className="block w-full mt-8 text-center bg-yellow-500 hover:bg-yellow-400 text-black font-bold py-3 rounded-lg transition"
+          >
             Proceder al Checkout
-          </button>
+          </Link>
 
           <Link
             href="/catalog"
