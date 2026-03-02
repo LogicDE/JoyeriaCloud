@@ -1,5 +1,6 @@
 import "./globals.css";
 import { CartProvider } from "@/context/Cartcontext";
+import { AuthProvider } from "@/context/AuthContext";
 import Navbar from "@/components/Navbar";
 
 export default function RootLayout({
@@ -10,10 +11,12 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body className="bg-black">
-        <CartProvider>
-          <Navbar />
-          {children}
-        </CartProvider>
+        <AuthProvider>
+          <CartProvider>
+            <Navbar />
+            {children}
+          </CartProvider>
+        </AuthProvider>
       </body>
     </html>
   );
