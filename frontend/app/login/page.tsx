@@ -2,11 +2,12 @@
 
 import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
+import { login as loginApi } from "@/lib/api";   // ← función de api.ts
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 export default function LoginPage() {
-  const { login } = useAuth();
+  const { setAuth } = useAuth();                  // ← setAuth, no login
   const router = useRouter();
 
   const [email, setEmail] = useState("");
@@ -20,7 +21,8 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      await login(email, password);
+      const data = await loginApi(email, password); // 1. llama api.ts
+      setAuth(data.token, data.user);               // 2. guarda en contexto
       router.push("/");
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Error al iniciar sesión.");

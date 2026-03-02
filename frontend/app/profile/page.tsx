@@ -35,18 +35,7 @@ export default function ProfilePage() {
                 {user?.role}
               </span>
             </div>
-            <div>
-              <p className="text-zinc-400 text-xs uppercase tracking-widest mb-1">Miembro desde</p>
-              <p className="text-white text-sm">
-                {user?.created_at
-                  ? new Date(user.created_at).toLocaleDateString("es-CO", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    })
-                  : "—"}
-              </p>
-            </div>
+            {/* created_at eliminado — no está en AuthUser del equipo */}
           </div>
 
           <button

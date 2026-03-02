@@ -2,11 +2,12 @@
 
 import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
+import { register as registerApi } from "@/lib/api"; // ← función de api.ts
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 export default function RegisterPage() {
-  const { register } = useAuth();
+  const { setAuth } = useAuth();                      // ← setAuth, no register
   const router = useRouter();
 
   const [name, setName] = useState("");
@@ -24,7 +25,6 @@ export default function RegisterPage() {
       setError("Las contraseñas no coinciden.");
       return;
     }
-
     if (password.length < 6) {
       setError("La contraseña debe tener al menos 6 caracteres.");
       return;
@@ -33,7 +33,8 @@ export default function RegisterPage() {
     setLoading(true);
 
     try {
-      await register(name, email, password);
+      const data = await registerApi(name, email, password); // 1. llama api.ts
+      setAuth(data.token, data.user);                        // 2. guarda en contexto
       router.push("/");
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Error al registrarse.");

@@ -63,6 +63,25 @@ services:
     networks:
       - luxgem-network
 
+# ── Frontend (Next.js) ────────────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: luxgem-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:4000/api
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    networks:
+      - luxgem-network
+
 
 # ── Volumes ────────────────────────────────────────────────────
 volumes:
