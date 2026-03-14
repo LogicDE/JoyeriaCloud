@@ -56,7 +56,7 @@ export default function CatalogPage() {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {products.map(product => (
-            <Link href={`/catalog/${product.id}`} key={product.id}>
+            <Link href={`/products/${product.id}`} key={product.id}>
               <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden hover:border-yellow-500 transition cursor-pointer">
                 <div className="h-48 bg-zinc-800 overflow-hidden">
                   <img
@@ -76,14 +76,5 @@ export default function CatalogPage() {
         </div>
       )}
     </main>
-  );
-}
-
-// Suspense requerido por useSearchParams en Next.js 14+
-export default function CatalogPage() {
-  return (
-    <Suspense>
-      <CatalogContent />
-    </Suspense>
   );
 }
