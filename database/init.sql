@@ -208,6 +208,7 @@ INSERT INTO reviews (product_id, user_id, rating, comment) VALUES
    'Muy elegante y bien terminado. El empaque también es muy bonito. Lo recomiendo totalmente.')
 ON CONFLICT DO NOTHING;
 
--- ============================================================
-RAISE NOTICE '✅ LuxGem DB inicializada con datos de prueba.';
--- ============================================================
+DO $$
+BEGIN
+  RAISE NOTICE 'LuxGem DB inicializada con datos de prueba.';
+END $$;

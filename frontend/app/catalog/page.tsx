@@ -78,3 +78,12 @@ export default function CatalogPage() {
     </main>
   );
 }
+
+// Suspense requerido por useSearchParams en Next.js 14+
+export default function CatalogPage() {
+  return (
+    <Suspense>
+      <CatalogContent />
+    </Suspense>
+  );
+}
