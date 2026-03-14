@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { useCart } from "@/context/Cartcontext";
+import { Product as APIProduct } from "@/lib/api";
+
 
 type Product = {
   id: number;
@@ -10,7 +12,7 @@ type Product = {
   category: string;
 };
 
-export default function ProductCard({ product }: { product: Product }) {
+export default function ProductCard({ product }: { product: APIProduct }) {
 
   const { addToCart } = useCart();
 

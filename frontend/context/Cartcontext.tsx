@@ -1,13 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState, ReactNode } from "react";
-
-type Product = {
-  id: number;
-  name: string;
-  price: number;
-  category: string;
-};
+import { Product } from "@/lib/api"; // 👈 IMPORTANTE
 
 type CartContextType = {
   cart: Product[];
