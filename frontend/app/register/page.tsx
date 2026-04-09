@@ -44,83 +44,91 @@ export default function RegisterPage() {
   };
 
   return (
-    <main className="min-h-screen bg-black flex items-center justify-center px-4">
-      <div className="w-full max-w-md bg-zinc-900 border border-zinc-800 rounded-2xl p-8 shadow-xl">
+    <main className="min-h-screen bg-surface-base text-foreground flex items-center justify-center px-6 pt-24 pb-12 relative overflow-hidden">
+      {/* Decorative background elements */}
+      <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-gold-mid/10 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-1/4 left-1/4 w-[30rem] h-[30rem] bg-teal/10 rounded-full blur-[150px] pointer-events-none" />
 
-        <h1 className="text-3xl font-bold text-yellow-500 text-center mb-2">
+      <div className="w-full max-w-md glass rounded-2xl p-8 shadow-2xl relative z-10 border border-surface-border/50">
+
+        <div className="flex justify-center mb-6">
+          <span className="text-4xl">✨</span>
+        </div>
+
+        <h1 className="text-3xl font-bold text-gold-light text-center mb-2 tracking-wide font-sans">
           Crear Cuenta
         </h1>
-        <p className="text-zinc-400 text-center text-sm mb-8">
+        <p className="text-foreground/60 text-center text-sm mb-8 font-light">
           Únete a JoyeriaCloud
         </p>
 
         {error && (
-          <div className="bg-red-900/40 border border-red-700 text-red-300 text-sm px-4 py-3 rounded-lg mb-6">
+          <div className="bg-red-900/20 border border-red-500/50 text-red-200 text-sm px-4 py-3 rounded-lg mb-6 shadow-sm">
             {error}
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-5">
           <div>
-            <label className="block text-zinc-300 text-sm mb-1">Nombre completo</label>
+            <label className="block text-foreground/80 text-sm mb-2 font-medium tracking-wide">Nombre completo</label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Juan Pérez"
               required
-              className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-yellow-500 transition"
+              className="w-full bg-surface-elevated/50 border border-surface-border text-foreground rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-gold-mid focus:ring-1 focus:ring-gold-mid/50 transition-all"
             />
           </div>
 
           <div>
-            <label className="block text-zinc-300 text-sm mb-1">Email</label>
+            <label className="block text-foreground/80 text-sm mb-2 font-medium tracking-wide">Email</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="tu@email.com"
               required
-              className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-yellow-500 transition"
+              className="w-full bg-surface-elevated/50 border border-surface-border text-foreground rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-gold-mid focus:ring-1 focus:ring-gold-mid/50 transition-all"
             />
           </div>
 
           <div>
-            <label className="block text-zinc-300 text-sm mb-1">Contraseña</label>
+            <label className="block text-foreground/80 text-sm mb-2 font-medium tracking-wide">Contraseña</label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Mínimo 6 caracteres"
               required
-              className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-yellow-500 transition"
+              className="w-full bg-surface-elevated/50 border border-surface-border text-foreground rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-gold-mid focus:ring-1 focus:ring-gold-mid/50 transition-all"
             />
           </div>
 
           <div>
-            <label className="block text-zinc-300 text-sm mb-1">Confirmar contraseña</label>
+            <label className="block text-foreground/80 text-sm mb-2 font-medium tracking-wide">Confirmar contraseña</label>
             <input
               type="password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               placeholder="Repite tu contraseña"
               required
-              className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-yellow-500 transition"
+              className="w-full bg-surface-elevated/50 border border-surface-border text-foreground rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-gold-mid focus:ring-1 focus:ring-gold-mid/50 transition-all"
             />
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-yellow-500 hover:bg-yellow-400 text-black font-bold py-3 rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-gold-mid hover:bg-gold-light text-surface-base font-semibold tracking-wide py-3.5 rounded-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_0_15px_rgba(199,152,79,0.2)] hover:shadow-[0_0_25px_rgba(199,152,79,0.4)] hover:-translate-y-0.5 mt-2"
           >
             {loading ? "Registrando..." : "Crear Cuenta"}
           </button>
         </form>
 
-        <p className="text-zinc-400 text-sm text-center mt-6">
+        <p className="text-foreground/60 text-sm text-center mt-8">
           ¿Ya tienes cuenta?{" "}
-          <Link href="/login" className="text-yellow-500 hover:underline">
+          <Link href="/login" className="text-gold-light hover:text-gold-mid font-medium transition-colors hover:underline underline-offset-4">
             Inicia sesión
           </Link>
         </p>

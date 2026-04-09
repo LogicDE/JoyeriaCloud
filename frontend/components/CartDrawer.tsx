@@ -25,35 +25,35 @@ export default function CartDrawer({ isOpen, onClose }: Props) {
       {isOpen && (
         <div
           onClick={onClose}
-          className="fixed inset-0 bg-black/70 backdrop-blur-sm z-40"
+          className="fixed inset-0 bg-surface-base/80 backdrop-blur-md z-40 transition-all duration-300"
         />
       )}
 
       {/* Drawer oscuro */}
       <div
-        className={`fixed top-0 right-0 h-full w-96 bg-black text-white shadow-2xl z-50 transform transition-transform duration-300 border-l border-gray-800 ${
+        className={`fixed top-0 right-0 h-full w-96 glass text-foreground shadow-2xl z-50 transform transition-transform duration-300 border-l border-surface-border flex flex-col ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
         {/* Header */}
-        <div className="flex justify-between items-center p-6 border-b border-gray-800">
-          <h2 className="text-xl font-bold text-yellow-500">
+        <div className="flex justify-between items-center p-6 border-b border-surface-border">
+          <h2 className="text-xl font-bold text-gold-light tracking-wide font-sans">
             Tu Carrito
           </h2>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-yellow-500 transition"
+            className="text-foreground/50 hover:text-gold-light transition-colors"
           >
             <X size={22} />
           </button>
         </div>
 
         {/* Contenido */}
-        <div className="p-6 space-y-5 overflow-y-auto h-[65%]">
+        <div className="p-6 space-y-5 overflow-y-auto flex-1 custom-scrollbar">
           {items.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full text-center">
-              <span className="text-4xl mb-3">🛒</span>
-              <p className="text-gray-500">
+              <span className="text-4xl mb-4 opacity-50">🛒</span>
+              <p className="text-foreground/60 font-light">
                 Tu carrito está vacío
               </p>
             </div>
@@ -61,49 +61,56 @@ export default function CartDrawer({ isOpen, onClose }: Props) {
             items.map((item) => (
               <div
                 key={item.id}
-                className="flex gap-4 border-b border-gray-800 pb-4"
+                className="flex gap-4 border-b border-surface-border/50 pb-5 mb-5 last:border-0 last:mb-0 last:pb-0"
               >
-                <img
-                  src={item.image}
-                  className="w-16 h-16 object-cover rounded-md border border-gray-700"
-                />
+                <div className="w-20 h-20 bg-surface-base/50 rounded-md border border-surface-border overflow-hidden flex-shrink-0">
+                  <img
+                    src={item.image}
+                    className="w-full h-full object-cover"
+                    alt={item.name}
+                  />
+                </div>
 
-                <div className="flex-1">
-                  <h3 className="font-semibold text-white">
-                    {item.name}
-                  </h3>
-                  <p className="text-sm text-gray-400">
-                    ${item.price}
-                  </p>
+                <div className="flex-1 flex flex-col justify-between">
+                  <div>
+                    <h3 className="font-semibold text-foreground line-clamp-2 text-sm">
+                      {item.name}
+                    </h3>
+                    <p className="text-sm font-mono text-gold-light mt-1">
+                      ${item.price.toLocaleString('en-US', {minimumFractionDigits: 2})}
+                    </p>
+                  </div>
 
                   {/* Controles cantidad */}
-                  <div className="flex items-center gap-3 mt-3">
-                    <button
-                      onClick={() => decreaseQuantity(item.id)}
-                      className="px-2 py-1 bg-gray-900 border border-gray-700 rounded hover:border-yellow-500 transition"
-                    >
-                      -
-                    </button>
+                  <div className="flex items-center justify-between mt-3">
+                    <div className="flex items-center bg-surface-elevated border border-surface-border rounded-sm">
+                      <button
+                        onClick={() => decreaseQuantity(item.id)}
+                        className="px-2 py-0.5 text-gold-mid hover:text-gold-light hover:bg-surface-border transition-colors text-sm"
+                      >
+                        -
+                      </button>
 
-                    <span className="font-semibold text-yellow-500">
-                      {item.quantity}
-                    </span>
+                      <span className="w-6 text-center font-semibold font-sans text-xs">
+                        {item.quantity}
+                      </span>
 
+                      <button
+                        onClick={() => increaseQuantity(item.id)}
+                        className="px-2 py-0.5 text-gold-mid hover:text-gold-light hover:bg-surface-border transition-colors text-sm"
+                      >
+                        +
+                      </button>
+                    </div>
+                    
                     <button
-                      onClick={() => increaseQuantity(item.id)}
-                      className="px-2 py-1 bg-gray-900 border border-gray-700 rounded hover:border-yellow-500 transition"
+                      onClick={() => removeFromCart(item.id)}
+                      className="text-burgundy text-xs hover:text-red-400 transition-colors uppercase tracking-wider font-semibold"
                     >
-                      +
+                      Remover
                     </button>
                   </div>
                 </div>
-
-                <button
-                  onClick={() => removeFromCart(item.id)}
-                  className="text-red-500 text-xs hover:text-red-400 transition"
-                >
-                  Eliminar
-                </button>
               </div>
             ))
           )}
@@ -111,25 +118,25 @@ export default function CartDrawer({ isOpen, onClose }: Props) {
 
         {/* Footer */}
         {items.length > 0 && (
-          <div className="p-6 border-t border-gray-800 space-y-4">
-            <div className="flex justify-between font-semibold">
-              <span className="text-gray-400">Subtotal:</span>
-              <span className="text-yellow-500">
-                ${getSubtotal()}
+          <div className="p-6 border-t border-surface-border space-y-5 bg-surface-base/50 mt-auto">
+            <div className="flex justify-between font-bold text-lg">
+              <span className="text-foreground/80 font-sans">Subtotal:</span>
+              <span className="text-gold-light font-mono">
+                ${getSubtotal().toLocaleString('en-US', {minimumFractionDigits: 2})}
               </span>
             </div>
 
             <Link
               href="/cart"
               onClick={onClose}
-              className="block text-center bg-yellow-500 hover:bg-yellow-400 text-black font-bold py-3 rounded-lg transition"
+              className="block flex items-center justify-center bg-gold-mid hover:bg-gold-light text-surface-base font-semibold tracking-wide py-3.5 rounded-sm transition-all duration-300 shadow-[0_0_15px_rgba(199,152,79,0.2)] hover:shadow-[0_0_25px_rgba(199,152,79,0.4)]"
             >
               Ver Carrito Completo
             </Link>
 
             <button
               onClick={clearCart}
-              className="w-full text-sm text-gray-500 hover:text-red-500 transition"
+              className="w-full text-xs font-semibold uppercase tracking-widest text-foreground/40 hover:text-burgundy transition-colors"
             >
               Vaciar carrito
             </button>

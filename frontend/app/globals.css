@@ -1,26 +1,42 @@
 @import "tailwindcss";
 
+@theme {
+  --font-vollkorn: var(--font-vollkorn), serif;
+  
+  /* Paleta aportada */
+  --color-gold-mid: #AD7C4B;
+  --color-gold-light: #C7984F;
+  --color-navy: #293C7C;
+  --color-teal: #024944;
+  --color-burgundy: #812B4A;
+  
+  /* Colores de fondo oscuros complementarios (derivados del navy y negros) para el lujo */
+  --color-surface-base: #060a11;
+  --color-surface-elevated: #0f1725;
+  --color-surface-border: #1a2638;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --background: var(--color-surface-base);
+  --foreground: #f8f6f0;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-vollkorn), serif;
 }
+
+/* Utilidad para NavBars y Tarjetas Luxury (Glassmorphism) */
+@utility glass {
+  background-color: color-mix(in srgb, var(--color-teal) 20%, transparent);
+  backdrop-filter: blur(16px);
+  border: 1px solid color-mix(in srgb, var(--color-gold-light) 20%, transparent);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+}
+
+@utility glass-hover {
+  background-color: color-mix(in srgb, var(--color-teal) 30%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-gold-light) 50%, transparent);
+}
+

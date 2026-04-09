@@ -1,12 +1,14 @@
 // lib/api.ts
 // Cliente centralizado para comunicarse con el backend Express
-// En Docker, el browser llama a NEXT_PUBLIC_API_URL (expuesto al exterior)
-// En SSR/Server Components, usa INTERNAL_API_URL (red interna Docker)
+// En Beanstalk, el servidor Next.js usa INTERNAL_API_URL (inyectada en runtime)
+// El browser usa NEXT_PUBLIC_API_URL (embebida en el bundle en tiempo de build)
 
 const API_URL =
   typeof window === "undefined"
-    ? process.env.INTERNAL_API_URL || "http://10.0.2.143:8080/api"
-    : process.env.NEXT_PUBLIC_API_URL || "http://52.23.118.7/api";
+    ? process.env.INTERNAL_API_URL ||
+      "http://luxgem1-backend.eba-f3uzdhvg.us-east-1.elasticbeanstalk.com/api"
+    : process.env.NEXT_PUBLIC_API_URL ||
+      "http://luxgem1-backend.eba-f3uzdhvg.us-east-1.elasticbeanstalk.com/api";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -104,7 +106,9 @@ async function apiFetch<T>(
 
 // ─── Products API ─────────────────────────────────────────────────────────────
 
-export async function getProducts(filters: ProductFilters = {}): Promise<ProductsResponse> {
+export async function getProducts(
+  filters: ProductFilters = {}
+): Promise<ProductsResponse> {
   const params = new URLSearchParams();
   Object.entries(filters).forEach(([key, val]) => {
     if (val !== undefined && val !== "") params.append(key, String(val));
@@ -113,7 +117,9 @@ export async function getProducts(filters: ProductFilters = {}): Promise<Product
   return apiFetch<ProductsResponse>(`/products${query}`);
 }
 
-export async function getProductById(id: string): Promise<{ product: Product }> {
+export async function getProductById(
+  id: string
+): Promise<{ product: Product }> {
   return apiFetch<{ product: Product }>(`/products/${id}`);
 }
 
@@ -121,13 +127,18 @@ export async function getCategories(): Promise<{ categories: Category[] }> {
   return apiFetch<{ categories: Category[] }>("/categories");
 }
 
-export async function getProductReviews(productId: string): Promise<ReviewsResponse> {
+export async function getProductReviews(
+  productId: string
+): Promise<ReviewsResponse> {
   return apiFetch<ReviewsResponse>(`/reviews/products/${productId}/reviews`);
 }
 
 // ─── Auth API ─────────────────────────────────────────────────────────────────
 
-export async function login(email: string, password: string): Promise<AuthResponse> {
+export async function login(
+  email: string,
+  password: string
+): Promise<AuthResponse> {
   return apiFetch<AuthResponse>("/auth/login", {
     method: "POST",
     body: JSON.stringify({ email, password }),

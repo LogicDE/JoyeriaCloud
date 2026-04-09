@@ -1,152 +1,32 @@
-"use client";
+import Hero from "@/components/Hero";
 
-import { useCartStore } from "@/store/cartStore";
-import Link from "next/link";
-
-export default function CartPage() {
-  const {
-    items,
-    increaseQuantity,
-    decreaseQuantity,
-    removeFromCart,
-    clearCart,
-    getSubtotal,
-    getTotalItems,
-  } = useCartStore();
-
-  if (items.length === 0) {
-    return (
-      <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center">
-        <span className="text-6xl mb-4">🛒</span>
-        <h1 className="text-3xl font-bold text-yellow-500 mb-4">
-          Tu carrito está vacío
-        </h1>
-        <p className="text-gray-500 mb-8 text-center">
-          Parece que aún no has agregado productos.
-        </p>
-
-        <Link
-          href="/catalog"
-          className="bg-yellow-500 hover:bg-yellow-400 text-black font-bold px-6 py-3 rounded-lg transition"
-        >
-          Ir al Catálogo
-        </Link>
-      </div>
-    );
-  }
-
+export default function HomePage() {
   return (
-    <div className="min-h-screen bg-black text-white px-10 py-16">
-      <h1 className="text-4xl font-bold text-yellow-500 mb-10">
-        Carrito de Compras
-      </h1>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-        
-        {/* Lista de productos */}
-        <div className="lg:col-span-2 bg-gray-900 border border-gray-800 rounded-xl p-8">
-          {items.map((item) => (
-            <div
-              key={item.id}
-              className="flex items-center justify-between border-b border-gray-800 py-6"
-            >
-              <div className="flex items-center gap-6">
-                <img
-                  src={item.image}
-                  className="w-24 h-24 object-cover rounded-lg border border-gray-700"
-                />
-
-                <div>
-                  <h2 className="font-bold text-lg">
-                    {item.name}
-                  </h2>
-                  <p className="text-gray-400">
-                    ${item.price}
-                  </p>
-
-                  <div className="flex items-center gap-3 mt-4">
-                    <button
-                      onClick={() => decreaseQuantity(item.id)}
-                      className="px-3 py-1 bg-black border border-gray-700 rounded hover:border-yellow-500 transition"
-                    >
-                      -
-                    </button>
-
-                    <span className="font-semibold text-yellow-500">
-                      {item.quantity}
-                    </span>
-
-                    <button
-                      onClick={() => increaseQuantity(item.id)}
-                      className="px-3 py-1 bg-black border border-gray-700 rounded hover:border-yellow-500 transition"
-                    >
-                      +
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <div className="text-right">
-                <p className="font-bold text-lg text-yellow-500">
-                  ${item.price * item.quantity}
-                </p>
-
-                <button
-                  onClick={() => removeFromCart(item.id)}
-                  className="text-red-500 text-sm hover:text-red-400 transition mt-2"
-                >
-                  Eliminar
-                </button>
-              </div>
-            </div>
-          ))}
-
-          <div className="flex justify-end mt-8">
-            <button
-              onClick={clearCart}
-              className="text-sm text-gray-500 hover:text-red-500 transition"
-            >
-              Vaciar carrito
-            </button>
+    <main className="min-h-screen bg-surface-base flex flex-col pt-20"> 
+      <Hero />
+      
+      <section className="py-24 px-8 max-w-7xl mx-auto w-full">
+        <h2 className="text-3xl md:text-4xl text-center font-bold text-gold-light mb-16">
+          La Experiencia LuxGem
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
+          <div className="glass p-10 rounded-xl hover:glass-hover transition-all duration-300">
+             <span className="text-5xl block mb-6 drop-shadow-md">✨</span>
+             <h3 className="text-xl font-semibold text-gold-light mb-3">Diseño Exclusivo</h3>
+             <p className="text-foreground/80 font-light text-base leading-relaxed">Cada pieza es cuidadosamente fabricada por artesanos expertos con atención al más mínimo detalle.</p>
+          </div>
+          <div className="glass p-10 rounded-xl hover:glass-hover transition-all duration-300">
+             <span className="text-5xl block mb-6 drop-shadow-md">💎</span>
+             <h3 className="text-xl font-semibold text-gold-light mb-3">Materiales Premium</h3>
+             <p className="text-foreground/80 font-light text-base leading-relaxed">Utilizamos oro, plata y gemas preciosas altamente seleccionadas de la más alta pureza.</p>
+          </div>
+          <div className="glass p-10 rounded-xl hover:glass-hover transition-all duration-300">
+             <span className="text-5xl block mb-6 drop-shadow-md">🛡️</span>
+             <h3 className="text-xl font-semibold text-gold-light mb-3">Garantía Superior</h3>
+             <p className="text-foreground/80 font-light text-base leading-relaxed">Certeza de autenticidad y mantenimiento gratuito vitalicio para resguardar su inversión.</p>
           </div>
         </div>
-
-        {/* Resumen */}
-        <div className="bg-gray-900 border border-gray-800 rounded-xl p-8 h-fit">
-          <h2 className="text-xl font-bold text-yellow-500 mb-6">
-            Resumen de compra
-          </h2>
-
-          <div className="flex justify-between mb-4 text-gray-400">
-            <span>Productos:</span>
-            <span>{getTotalItems()}</span>
-          </div>
-
-          <div className="flex justify-between mb-4 text-gray-400">
-            <span>Subtotal:</span>
-            <span>${getSubtotal()}</span>
-          </div>
-
-          <div className="flex justify-between font-bold text-lg border-t border-gray-800 pt-4 text-yellow-500">
-            <span>Total:</span>
-            <span>${getSubtotal()}</span>
-          </div>
-
-          <Link
-              href="/checkout"
-              className="block w-full mt-8 text-center bg-yellow-500 hover:bg-yellow-400 text-black font-bold py-3 rounded-lg transition"
-          >
-            Proceder al Checkout
-          </Link>
-
-          <Link
-            href="/catalog"
-            className="block text-center mt-6 text-sm text-gray-500 hover:text-yellow-500 transition"
-          >
-            Seguir comprando
-          </Link>
-        </div>
-      </div>
-    </div>
+      </section>
+    </main>
   );
 }
